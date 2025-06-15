@@ -11,7 +11,11 @@ class Category extends Model
 
     protected $fillable = ['name', 'description'];
 
-    protected $hidden = ['updated_at'];
+    protected $hidden = [
+        'updated_at',
+        'deleted_at',
+        'created_at'
+    ];
 
     public function services()
     {

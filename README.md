@@ -1,61 +1,275 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🔧 Service Booking API - Laravel 12
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A RESTful API built using Laravel 12 for managing service bookings between users and providers with role-based access, booking lifecycle management, availability scheduling, notifications (Mail + Pusher), and reporting.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📦 Requirements
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP 8.2+
+- Laravel 12
+- MySQL
+- Redis (for queues)
+- Mail service (e.g. Mailtrap, SMTP)
+- Pusher (for real-time notifications)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🚀 Setup Instructions
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. **Clone the Repository**
+   ```bash
+   git clone https://your-repo-url.git
+   cd your-project
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. **Install Dependencies**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+   ```bash
+   composer install
+   ```
 
-## Laravel Sponsors
+3. **Environment Configuration**
+   Copy `.env.example` to `.env` and update:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+   ```env
+   DB_DATABASE=your_db
+   DB_USERNAME=root
+   DB_PASSWORD=
 
-### Premium Partners
+   MAIL_MAILER=smtp
+   MAIL_HOST=smtp.mailtrap.io
+   MAIL_PORT=2525
+   MAIL_USERNAME=your_username
+   MAIL_PASSWORD=your_password
+   MAIL_FROM_ADDRESS=admin@example.com
+   MAIL_FROM_NAME="Booking App"
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+   BROADCAST_DRIVER=pusher
+   PUSHER_APP_ID=your_app_id
+   PUSHER_APP_KEY=your_key
+   PUSHER_APP_SECRET=your_secret
+   PUSHER_HOST=
+   PUSHER_PORT=443
+   PUSHER_SCHEME=https
+   ```
 
-## Contributing
+4. **Generate App Key**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   ```bash
+   php artisan key:generate
+   ```
 
-## Code of Conduct
+5. **Run Migrations**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   ```bash
+   php artisan migrate
+   ```
+6. **Run Seeder**
+    for initial Categories and Services
+   ```bash
+   php artisan db:seed --class=CategoryServiceSeeder    
+   ```
 
-## Security Vulnerabilities
+7. **Queue Worker (for Notifications)**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+   ```bash
+   php artisan queue:work
+   ```
 
-## License
+8. **Run Server**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+   ```bash
+   php artisan serve
+   ```
+
+---
+
+## 🔐 Authentication
+
+### 🔑 User Registration
+
+`POST /api/auth/register`
+
+```json
+{
+  "name": "User 1",
+  "email": "user1@test.com",
+  "password": "12345678"
+}
+```
+
+### 🛠 Supplier Registration
+
+`POST /api/auth/register`
+
+```json
+{
+  "name": "Supplier 1",
+  "email": "supplier1@test.com",
+  "password": "12345678",
+  "is_supplier": true
+}
+```
+
+### 🔓 Login
+
+`POST /api/auth/login`
+
+```json
+{
+  "email": "user1@test.com",
+  "password": "12345678"
+}
+```
+
+### 🚪 Logout
+
+`POST /api/auth/logout`
+
+---
+
+## 🔐 Admin Registration
+
+> Admins require special headers or CLI:
+
+### 🔑 Via Header
+
+Set `.env` keys:
+
+```env
+ADMIN_TOKEN=s2e29nd209!3223@@dwd
+ADMIN_TOKEN_KEY=is_admin_user!##
+```
+
+Headers:
+
+```
+is_admin_user!##: s2e29nd209!3223@@dwd
+```
+
+### 🔧 Via CLI
+
+```bash
+php artisan app:register-new-admin
+```
+
+---
+
+## 📚 API Endpoints
+
+### 📂 Categories & Services
+
+* `GET /api/all_categories`
+* `GET /api/all_services`
+* `GET /api/all_category_service`
+
+> Admin Only:
+
+* `POST /api/add_category`
+
+> Provider Only:
+
+* `POST /api/add_service`
+* `POST /api/manage_service`
+
+### ⏰ Availability
+
+> Provider Only:
+
+* `POST /api/manage_availability`
+
+* `GET /api/provider_availability?provider_id=4&date=2025-06-16`
+
+---
+
+## 📅 Bookings
+
+### 🧾 Booking
+
+* `POST /api/book_service`
+
+```json
+{
+  "provider_id": 4,
+  "service_id": 9,
+  "date": "2025-06-16",
+  "start_time": "10:00:00"
+}
+```
+
+* `POST /api/cancel_booking`
+
+```json
+{
+  "booking_id": 1
+}
+```
+
+### 📋 Booking Lists
+
+Paginated (optional `?page=1`):
+
+* `GET /api/future_bookings`
+* `GET /api/all_bookings`
+* `GET /api/booking_history`
+
+---
+
+## 📊 Reporting
+
+### 🔍 Get Reporting
+
+`GET /api/reporting`
+
+* For both users and providers.
+* Includes: total bookings, bookings today, most requested service, earnings/spending, etc.
+
+---
+
+## 📢 Real-Time Notifications
+
+Pusher is used for broadcasting booking confirmation events.
+
+Channels:
+
+* `private-user{userId}`
+* `private-provider{providerId}`
+
+Events:
+
+* `booking.confirmed`
+* `booking.cancelled`
+
+To listen on frontend:
+
+```js
+Echo.private('user1').listen('.booking.confirmed', (e) => {
+  console.log(e.message);
+});
+```
+
+---
+
+## 📨 Emails
+
+Emails are sent using Laravel Notifications when a booking is confirmed:
+
+* User receives a booking confirmation
+* Provider receives a confirmation notice
+
+Ensure `queue:work` is running to send emails if queued.
+
+---
+
+## ✅ Status Labels
+
+Booking `status` is returned as a readable string in API responses:
+
+```json
+"status": 0,
+"status_label": "confirmed"
+```
+
+Internally, status is still stored as an integer in DB.
+
+---

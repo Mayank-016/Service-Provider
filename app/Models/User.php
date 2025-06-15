@@ -60,4 +60,14 @@ class User extends Authenticatable
         };
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class)->where('status', '!=', BOOKING_STATUS_CANCELLED);
+    }
+
+    public function providerBookings()
+    {
+        return $this->hasMany(Booking::class, 'provider_id')->where('status', '!=', BOOKING_STATUS_CANCELLED);
+    }
+
 }

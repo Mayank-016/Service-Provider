@@ -16,4 +16,9 @@ class ServiceRepository extends BaseRepository implements ServiceInterface
     {
         return Service::class;
     }
+
+    public function findByNameAndCategory($name, $category): ?Service
+    {
+        return $this->model->where('name',$name)->where('category_id',$category)->first();
+    }
 }

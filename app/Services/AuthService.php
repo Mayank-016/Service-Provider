@@ -51,6 +51,31 @@ class AuthService
     }
 
     /**
+     * Register a new user(admin), log them in, and return an API token.
+     *
+     * @param  string  $email
+     * @param  string  $name
+     * @param  string  $password
+     * @return array{token: string}
+     */
+    public function registerAndLoginAdmin(string $email, string $name, string $password): array
+    {
+        $user = $this->userRepository->create([
+            'email' => $email,
+            'name' => $name,
+            'password' => $password,
+            'role' => Role::Admin,
+        ]);
+
+        //TODO: Can Add Role Based Abilities In Token Itself Then No Need For Separate Middleware
+        $token = $user->createToken(config('app.name'))->plainTextToken;
+
+        return [
+            'token' => $token,
+        ];
+    }
+
+    /**
      * Attempt to log in a user with provided credentials.
      *
      * @param  string  $email

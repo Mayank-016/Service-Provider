@@ -9,8 +9,12 @@ class Service extends Model
     use SoftDeletes;
 
     protected $fillable = ['name', 'description', 'category_id'];
-    
-    protected $hidden = ['updated_at'];
+
+    protected $hidden = [
+        'updated_at',
+        'deleted_at',
+        'created_at'
+    ];
 
     public function category()
     {

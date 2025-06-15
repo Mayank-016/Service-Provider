@@ -51,6 +51,28 @@ class AuthController extends Controller
     }
 
     /**
+     * Handle admin registration and auto-login.
+     *
+     * @param  RegisterRequest  $request
+     * @return JsonResponse
+     */
+    public function registerAdmin(RegisterRequest $request): JsonResponse
+    {
+        $data = $this->authService->registerAndLoginAdmin(
+            $request->input('email'),
+            $request->input('name'),
+            $request->input('password')
+        );
+
+        return response()->json([
+            'success' => true,
+            'status' => Response::HTTP_CREATED,
+            'message' => 'User Registered Successfully!',
+            'data' => $data,
+        ], Response::HTTP_CREATED);
+    }
+
+    /**
      * Handle user login.
      *
      * @param  LoginRequest  $request

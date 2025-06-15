@@ -7,4 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 interface CategoryInterface extends BaseInterface
 {
+    public function allWithService(): ?Collection;
 }

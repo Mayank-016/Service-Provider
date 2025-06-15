@@ -7,4 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 interface ServiceInterface extends BaseInterface
 {
+    public function findByNameAndCategory($name, $category): ?Model;
 }

@@ -18,6 +18,10 @@ class ProviderAvailability extends Model
 
     protected $hidden = ['updated_at'];
 
+    protected $casts = [
+        'date' => 'date:Y-m-d',
+    ];
+
     public function provider()
     {
         return $this->belongsTo(User::class, 'provider_id');
