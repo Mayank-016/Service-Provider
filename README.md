@@ -260,7 +260,6 @@ Emails are sent using Laravel Notifications when a booking is confirmed:
 Ensure `queue:work` is running to send emails if queued.
 
 ---
-
 ## ✅ Status Labels
 
 Booking `status` is returned as a readable string in API responses:
@@ -271,5 +270,17 @@ Booking `status` is returned as a readable string in API responses:
 ```
 
 Internally, status is still stored as an integer in DB.
+
+---
+Here’s a cleaner, well-formatted, **copyable** version of your Postman Collection share, with improved readability and markdown-friendly formatting:
+
+---
+
+## 📮🧑‍💻📬 Postman Collection
+
+🔗 **Service Provider API Collection**
+Click the link below to open in Postman:
+
+[Open Postman Collection](https://www.postman.com/science-participant-50153919/service-provider-api/collection/uj16tiu/serviceprovider?action=share&creator=27419417&active-environment=27419417-73a2a75c-4452-449a-8a12-e4da055f1cf7)
 
 ---
