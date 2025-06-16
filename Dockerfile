@@ -1,5 +1,4 @@
-FROM richarvey/nginx-php-fpm:1.7.2More actions
-
+FROM richarvey/nginx-php-fpm:3.1.6
 COPY . .
 
 # Image config
